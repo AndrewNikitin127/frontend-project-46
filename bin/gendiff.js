@@ -21,12 +21,5 @@ const { args } = program;
 const [file1, file2] = args;
 //получаем объект параметрами, свойства его - указанные нами параметры(format).
 const options = program.opts();
-console.log(options.format)
-
-function test (file1, file2, format='не указан') {
-    console.log(`файл1 ${file1} файл2 ${file2}`);
-    console.log(`формат ${format}` );
-
-}
-
-test(file1, file2, options.format)
+//получаем указанный формат
+const format = options.format;
