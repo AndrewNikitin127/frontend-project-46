@@ -3,3 +3,9 @@
 
 ### asciinema Step 3
 https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD
+
+Setup
+make install
+
+Run tests
+make test

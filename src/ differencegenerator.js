@@ -31,7 +31,7 @@ const objectCompare = (object1, object2) => {
 const genDiff = (path1, path2) => {
   const data1 = JSON.parse(readFile(path1));
   const data2 = JSON.parse(readFile(path2));
-
+  console.log(data1);
   return objectCompare(data1, data2);
 };
 
