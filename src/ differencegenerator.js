@@ -1,5 +1,14 @@
 import _ from 'lodash';
-import readFile from './index.js';
+import fs from 'fs';
+import path from 'path';
+
+const readFile = (filePath) => {
+  console.log(filePath);
+  const fullPath = path.resolve(process.cwd(), filePath);
+  const data = fs.readFileSync(fullPath, 'UTF-8');
+  console.log(fullPath);
+  return data;
+};
 
 const objectCompare = (object1, object2) => {
   const allSortsKeys = _.sortBy(Object.keys({ ...object1, ...object2 }));
@@ -24,14 +33,12 @@ const objectCompare = (object1, object2) => {
   }, []);
 
   const resultAsString = ['{', ...comparisonResultArray, '}'].join('\n');
-
   return resultAsString;
 };
 
 const genDiff = (path1, path2) => {
   const data1 = JSON.parse(readFile(path1));
   const data2 = JSON.parse(readFile(path2));
-  console.log(data1);
   return objectCompare(data1, data2);
 };
 
