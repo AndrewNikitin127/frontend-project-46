@@ -20,20 +20,25 @@ jobs:
       matrix:
         node-version: [18.x]
 
-      steps: # список шагов, которые надо выполнить
+      steps: 
+      # список шагов, которые надо выполнить
       # Check-out repository under GitHub workspace
       # https://github.com/actions/checkout
         - uses: actions/checkout@v3 #uses запускает action, chekout-подтягивает наш проэкт
         # Step's name
-        - name: Use Node.js ${{ matrix.node-version }} #устанавливает Node.js
+        - name: Use Node.js ${{ matrix.node-version }} 
+        # устанавливает Node.js
         # Configures the node version used on GitHub-hosted runners
         # https://github.com/actions/setup-node
           uses: actions/setup-node@v3 
         
         # The Node.js version to configure
-          with: # параметры для указанного перед этим экшена
-            node-version: ${{ matrix.node-version }} #берется из matrix выше
-            cache: 'npm' # включает опцию кэширования npm ускоряет повторные сборки
+          with: 
+          # параметры для указанного перед этим экшена
+            node-version: ${{ matrix.node-version }} 
+            #берется из matrix выше
+            cache: 'npm' 
+            # включает опцию кэширования npm ускоряет повторные сборки
 
         - name: install dependencies
           run: make install
