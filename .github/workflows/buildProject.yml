@@ -16,8 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      # Node versions list
-      matrix:
+       matrix:
         node-version: [18.x]
 
       steps: # список шагов, которые надо выполнить
