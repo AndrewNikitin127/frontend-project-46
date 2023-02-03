@@ -1,7 +1,9 @@
-# file: .github/workflows/hello-world.yml
-name: hello-world
+# file: .github/workflows/buildProject.yml
+name: buildProject
 # on – определяет события, которые запускают воркфлоу
-on: push
+on: 
+  - push
+  - pull_request
 jobs:
   # build – произвольно выбранное имя задания
   # их может быть больше одного
@@ -13,16 +15,16 @@ jobs:
       # checkout – клонирует репозиторий
       
       - uses: actions/checkout@v3
-      - name: say hello
-        run: make say-hello
-
+      
       - name: install dependencies
         run: make install
       - name: linter
         run: make lint
       - name: tests
         run: make test
+     
       # run – произвольная bash-команда
-      # ls -la выведет содержимое текущего репозитория
+      # name: имя конкретного run.Важно при присваивании имени '-' 
+      # отдается name, следующим за ним run её уже не имеет
       
         

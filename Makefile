@@ -20,6 +20,3 @@ publish:
 	npm publish --dry-run
 
 ###.PHONY: test
-
-say-hello: 
-	echo Hello, World!
