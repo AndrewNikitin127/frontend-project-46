@@ -1,7 +1,7 @@
 # file: .github/workflows/buildProject.yml
 name: buildProject
 # on – определяет события, которые запускают воркфлоу
-on: 
+on:
   - push
   - pull_request
 jobs:
@@ -13,17 +13,15 @@ jobs:
     steps: # список шагов, которые надо выполнить
       # экшен, выполняет какую-то задачу
       # checkout – клонирует репозиторий
-      
+
       - uses: actions/checkout@v3
-      
+
       - name: install dependencies, linter, tests
         run: |
-        make install
-        make lint
-        make test
-     
+          make install
+          make lint
+          make test
+
       # run – произвольная bash-команда
-      # name: имя конкретного run.Важно при присваивании имени '-' 
+      # name: имя конкретного run.Важно при присваивании имени '-'
       # отдается name, следующим за ним run её уже не имеет
-      
-        
