@@ -16,12 +16,14 @@ jobs:
 
       - uses: actions/checkout@v3
 
-      - name: install dependencies, linter, tests
-        run: |
-          make install
-          make lint
-          make test
-
+      - name: install dependencies
+        run: make install
+      - name: linter
+        run: make lint
+      - name: tests
+        run: make test
+          
       # run – произвольная bash-команда
       # name: имя конкретного run.Важно при присваивании имени '-'
-      # отдается name, следующим за ним run её уже не имеет
+      # отдается name, следующим за ним run её уже не имеет  
+      # можно просто писать - run: действие, не давая ему имя
