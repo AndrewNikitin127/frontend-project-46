@@ -4,8 +4,8 @@ name: buildProject
 on:
   - push
   - pull_request
-
-env: # тут можно задать переменную окружения
+# тут можно задать переменную окружения
+env: 
   CI: true
 
 jobs:
@@ -24,7 +24,8 @@ jobs:
       # список шагов, которые надо выполнить
       # Check-out repository under GitHub workspace
       # https://github.com/actions/checkout
-        - uses: actions/checkout@v3 #uses запускает action, chekout-подтягивает наш проэкт
+        - uses: actions/checkout@v3 
+        # uses запускает action, chekout-подтягивает наш проэкт
         # Step's name
         - name: Use Node.js ${{ matrix.node-version }} 
         # устанавливает Node.js
