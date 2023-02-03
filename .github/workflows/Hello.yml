@@ -13,4 +13,4 @@ jobs:
       - uses: actions/checkout@v2
       # run – произвольная bash-команда
       # ls -la выведет содержимое текущего репозитория
-      - run: make say-hello
+      - run: echo "say, Hello"
