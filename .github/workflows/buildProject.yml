@@ -12,7 +12,7 @@ jobs:
   # build – произвольно выбранное имя задания
   # их может быть больше одного
   build:
-    # операционная система для работы воркфлоу
+   
     runs-on: ubuntu-latest
 
     strategy:
@@ -48,7 +48,7 @@ jobs:
       - name: Test & publish code coverage
         # Publish code coverage on Code Climate
         # https://github.com/paambaati/codeclimate-action
-        uses: paambaati/codeclimate-action@v3.2.0
+        uses: paambaati/codeclimate-action@v3.3.0
         # Add Code Climate secret key
         env:
           TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
