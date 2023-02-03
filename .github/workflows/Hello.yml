@@ -1,3 +1,4 @@
+# file: .github/workflows/hello-world.yml
 name: hello-world
 # on – определяет события, которые запускают воркфлоу
 on: push
@@ -10,7 +11,7 @@ jobs:
     steps: # список шагов, которые надо выполнить
       # экшен, выполняет какую-то задачу
       # checkout – клонирует репозиторий
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       # run – произвольная bash-команда
       # ls -la выведет содержимое текущего репозитория
-      - run: echo "say, Hello"
+      - run: ls -la
