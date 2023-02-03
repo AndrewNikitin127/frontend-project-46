@@ -23,7 +23,7 @@ const objectCompare = (object1, object2) => {
       result.push(`    ${key}: ${object1[key]}`);
     }
     return result;
-  }, []);
+  }, []).join('\n');
 };
 
 const genDiff = (path1, path2) => {
