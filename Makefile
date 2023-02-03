@@ -1,5 +1,5 @@
 install: install-deps
-#	npx simple-git-hooks
+	npx simple-git-hooks
 
 run:
 	bin/gendiff.js
@@ -19,4 +19,7 @@ lint:
 publish:
 	npm publish --dry-run
 
-#.PHONY: test
+.PHONY: test
+
+say-hello: 
+	echo Hello, World!
