@@ -4,6 +4,10 @@ name: buildProject
 on:
   - push
   - pull_request
+
+env: # тут можно задать переменную окружения
+  CI: true
+
 jobs:
   # build – произвольно выбранное имя задания
   # их может быть больше одного
@@ -16,40 +20,39 @@ jobs:
       matrix:
         node-version: [18.x]
 
-    steps: # список шагов, которые надо выполнить
+      steps: # список шагов, которые надо выполнить
       # Check-out repository under GitHub workspace
       # https://github.com/actions/checkout
-      - uses: actions/checkout@v3
+        - uses: actions/checkout@v3 #uses запускает action, chekout-подтягивает наш проэкт
         # Step's name
-      - name: Use Node.js ${{ matrix.node-version }}
+        - name: Use Node.js ${{ matrix.node-version }} #устанавливает Node.js
         # Configures the node version used on GitHub-hosted runners
         # https://github.com/actions/setup-node
-        uses: actions/setup-node@v3
-        # экшен, выполняет какую-то задачу
-        # checkout – клонирует репозиторий
+          uses: actions/setup-node@v3 
+        
         # The Node.js version to configure
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+          with: # параметры для указанного перед этим экшена
+            node-version: ${{ matrix.node-version }} #берется из matrix выше
+            cache: 'npm' # включает опцию кэширования npm ускоряет повторные сборки
 
-      - name: install dependencies
-        run: make install
-      - name: linter
-        run: make lint
-      - name: tests
-        run: make test
+        - name: install dependencies
+          run: make install
+        - name: linter
+          run: make lint
+        - name: tests
+          run: make test
       # run – произвольная bash-команда
       # name: имя конкретного run.Важно при присваивании имени '-'
       # отдается name, следующим за ним run её уже не имеет
       # можно просто писать - run: действие, не давая ему имя
 
-      # - name: Test & publish code coverage
-      #   # Publish code coverage on Code Climate
-      #   # https://github.com/paambaati/codeclimate-action
-      #   uses: paambaati/codeclimate-action@v3.3.0
-      #   # Add Code Climate secret key
-      #   env:
-      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-      #   with:
-      #     coverageCommand: make test-coverage
-      #     debug: true
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v3.3.0
+        # Add Code Climate secret key
+        env:
+          TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
+        with:
+          coverageCommand: make test-coverage
+          debug: true
