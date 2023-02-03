@@ -12,11 +12,12 @@ jobs:
   # build – произвольно выбранное имя задания
   # их может быть больше одного
   build:
-   
+    # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
 
     strategy:
-       matrix:
+      # Node versions list
+      matrix:
         node-version: [18.x]
 
       steps: # список шагов, которые надо выполнить
@@ -45,13 +46,13 @@ jobs:
       # отдается name, следующим за ним run её уже не имеет
       # можно просто писать - run: действие, не давая ему имя
 
-      - name: Test & publish code coverage
+     # - name: Test & publish code coverage
         # Publish code coverage on Code Climate
         # https://github.com/paambaati/codeclimate-action
-        uses: paambaati/codeclimate-action@v3.3.0
+ #       uses: paambaati/codeclimate-action@v3.3.0
         # Add Code Climate secret key
-        env:
-          TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
-        with:
-          coverageCommand: make test-coverage
-          debug: true
+ #       env:
+ #         TEST_REPORTER_ID: ${{ secrets.TEST_REPORTER_ID }}
+ #      with:
+  #        coverageCommand: make test-coverage
+   #       debug: true
