@@ -42,3 +42,14 @@ jobs:
       # name: имя конкретного run.Важно при присваивании имени '-'
       # отдается name, следующим за ним run её уже не имеет
       # можно просто писать - run: действие, не давая ему имя
+
+      # - name: Test & publish code coverage
+      #   # Publish code coverage on Code Climate
+      #   # https://github.com/paambaati/codeclimate-action
+      #   uses: paambaati/codeclimate-action@v3.3.0
+      #   # Add Code Climate secret key
+      #   env:
+      #     CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      #   with:
+      #     coverageCommand: make test-coverage
+      #     debug: true
