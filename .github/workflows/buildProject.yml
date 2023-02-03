@@ -10,11 +10,27 @@ jobs:
   build:
     # операционная система для работы воркфлоу
     runs-on: ubuntu-latest
-    steps: # список шагов, которые надо выполнить
-      # экшен, выполняет какую-то задачу
-      # checkout – клонирует репозиторий
 
+    strategy:
+      # Node versions list
+      matrix:
+        node-version: [18.x]
+
+    steps: # список шагов, которые надо выполнить
+      # Check-out repository under GitHub workspace
+      # https://github.com/actions/checkout
       - uses: actions/checkout@v3
+        # Step's name
+      - name: Use Node.js ${{ matrix.node-version }}
+        # Configures the node version used on GitHub-hosted runners
+        # https://github.com/actions/setup-node
+        uses: actions/setup-node@v3
+        # экшен, выполняет какую-то задачу
+        # checkout – клонирует репозиторий
+        # The Node.js version to configure
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
       - name: install dependencies
         run: make install
@@ -22,8 +38,7 @@ jobs:
         run: make lint
       - name: tests
         run: make test
-          
       # run – произвольная bash-команда
       # name: имя конкретного run.Важно при присваивании имени '-'
-      # отдается name, следующим за ним run её уже не имеет  
+      # отдается name, следующим за ним run её уже не имеет
       # можно просто писать - run: действие, не давая ему имя
