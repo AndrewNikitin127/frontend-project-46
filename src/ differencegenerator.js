@@ -1,12 +1,15 @@
 import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
+import parse from './parsers.js';
 
 const readFile = (filePath) => {
   const fullPath = path.resolve(process.cwd(), filePath);
   const data = fs.readFileSync(fullPath, 'UTF-8');
   return data;
 };
+
+const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
 const objectCompare = (object1, object2) => {
   const allSortsKeys = _.sortBy(Object.keys({ ...object1, ...object2 }));
@@ -27,9 +30,10 @@ const objectCompare = (object1, object2) => {
 };
 
 const genDiff = (path1, path2) => {
-  const data1 = JSON.parse(readFile(path1));
-  const data2 = JSON.parse(readFile(path2));
-  return `{\n${objectCompare(data1, data2)}\n}`;
+  const objData1 = parse(readFile(path1), getFileFormat(path1));
+  const objData2 = parse(readFile(path2), getFileFormat(path2));
+  if (!_.isObject(objData1) || !_.isObject(objData2)) return 'unknown file format';
+  return `{\n${objectCompare(objData1, objData2)}\n}`;
 };
 
 export default genDiff;
