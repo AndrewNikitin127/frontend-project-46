@@ -26,14 +26,14 @@ const objectCompare = (object1, object2) => {
       result.push(`    ${key}: ` + JSON.stringify(object1[key]));
     }
     return result;
-  }, []).join('\n');
+  }, []).join('\n').replace(/"/g, '');
 };
 
 const genDiff = (path1, path2) => {
   const objData1 = parse(readFile(path1), getFileFormat(path1));
   const objData2 = parse(readFile(path2), getFileFormat(path2));
   if (!_.isObject(objData1) || !_.isObject(objData2)) return 'unknown file format';
-  return `{\n${objectCompare(objData1, objData2)}\n}`.replace(/"/g, '');
+  return `{\n${objectCompare(objData1, objData2)}\n}`;
 };
 
 export default genDiff;
