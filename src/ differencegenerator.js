@@ -15,7 +15,7 @@ const objectCompare = (object1, object2) => {
   const getStatus = (obj1, obj2, key) => {
     if (!_.has(obj1, key)) return 'added';
     if (!_.has(obj2, key)) return 'removed';
-    if (!_.isEqual(obj1[key], obj2[key])) return 'unupdated';
+    if (_.isEqual(obj1[key], obj2[key])) return 'unupdated';
     return 'updeted';
   };
 
@@ -28,7 +28,7 @@ const objectCompare = (object1, object2) => {
       acc.value = object2[key];
     } else if (acc.status === 'removed' || acc.status === 'unupdated') {
       acc.value = object1[key];
-    } else if (isObject(object1[key] && isObject(object2[key]))) {
+    } else if (isObject(object1[key]) && isObject(object2[key])) {
       acc.value = objectCompare(object1[key], object2[key]);
     } else {
       acc = [
@@ -54,12 +54,12 @@ export default genDiff;
 const objet1 = {
   d: 'asds',
   v: 222,
-  caches: {gg: 22, ddd:''}
+  caches: { gg: 22, ddd: 1 },
 };
 const objet2 = {
   d: 'asds',
   v: 333,
-  caches: {gg: 222, ddd:''}
+  caches: { gg: 'hhh', ddd: '' },
 };
 
-console.log(JSON.stringify( objectCompare(objet1, objet2))); 
+console.log(JSON.stringify(objectCompare(objet1, objet2)));
