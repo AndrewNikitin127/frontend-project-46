@@ -14,19 +14,20 @@ const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 const objectCompare = (object1, object2) => {
   const allSortsKeys = _.sortBy(Object.keys({ ...object1, ...object2 }));
 
-  return allSortsKeys.reduce((result, key) => {
+  return allSortsKeys.map((key) => {
+    let acc = '';
     if (!_.has(object2, key)) {
-      result.push(`  - ${key}: ` + JSON.stringify(object1[key]));
+      acc = `  - ${key}: ${JSON.stringify(object1[key])}`;
     } else if (!_.has(object1, key)) {
-      result.push(`  + ${key}: ` + JSON.stringify(object2[key]));
+      acc = `  + ${key}: ${JSON.stringify(object2[key])}`;
     } else if (!_.isEqual(object1[key], object2[key])) {
-      result.push(`  - ${key}: ` + JSON.stringify(object1[key]));
-      result.push(`  + ${key}: ` + JSON.stringify(object2[key]));
+      acc = `  - ${key}: ${JSON.stringify(object1[key])}\n`
+          + `  + ${key}: ${JSON.stringify(object2[key])}`;
     } else {
-      result.push(`    ${key}: ` + JSON.stringify(object1[key]));
+      acc = `    ${key}: ${JSON.stringify(object1[key])}`;
     }
-    return result;
-  }, []).join('\n').replace(/"/g, '');
+    return acc;
+  }).join('\n').replace(/"/g, '');
 };
 
 const genDiff = (path1, path2) => {

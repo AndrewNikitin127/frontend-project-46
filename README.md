@@ -10,8 +10,11 @@
 ### Maintainability
 [![Maintainability](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/maintainability)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/maintainability)
 
-### asciinema Step 3
+### asciinema: An example of comparing flat json files and info
 https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD
+
+### asciinema: An example of comparing flat yaml files
+https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg
 
 Setup
 
