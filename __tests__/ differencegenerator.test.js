@@ -19,7 +19,7 @@ beforeAll(() => {
 
   pathFile1 = getFixturePath('file1.json');
   pathFile2 = getFixturePath('file2.json');
-  pathFile3 = getFixturePath('file3.yaml'); ;
+  pathFile3 = getFixturePath('file3.yaml');
   pathFile4 = getFixturePath('file4.yml');
 
   expectedResult = [
