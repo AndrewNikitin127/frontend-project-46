@@ -8,7 +8,10 @@ const readFile = (filePath) => {
   const data = fs.readFileSync(fullPath, 'UTF-8');
   return data;
 };
-const isObject = (object) => _.isObject(object) && !Array.isArray(object);
+const theseisObjects = (...objects) => {
+  const result = objects.every((object) => _.isObject(object) && !Array.isArray(object));
+  return result;
+};
 const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
 const objectCompare = (object1, object2) => {
@@ -28,7 +31,7 @@ const objectCompare = (object1, object2) => {
       acc.value = object2[key];
     } else if (acc.status === 'removed' || acc.status === 'unupdated') {
       acc.value = object1[key];
-    } else if (isObject(object1[key]) && isObject(object2[key])) {
+    } else if (theseisObjects(object1[key], object2[key])) {
       acc.value = objectCompare(object1[key], object2[key]);
     } else {
       acc = [
@@ -43,23 +46,10 @@ const objectCompare = (object1, object2) => {
 const genDiff = (path1, path2) => {
   const objData1 = parse(readFile(path1), getFileFormat(path1));
   const objData2 = parse(readFile(path2), getFileFormat(path2));
-  if (!isObject(objData1) || !isObject(objData2)) {
+  if (!theseisObjects(objData1, objData2)) {
     return 'unknown file format';
   }
   return `{\n${objectCompare(objData1, objData2)}\n}`;
 };
 
 export default genDiff;
-
-const objet1 = {
-  d: 'asds',
-  v: 222,
-  caches: { gg: 22, ddd: 1 },
-};
-const objet2 = {
-  d: 'asds',
-  v: 333,
-  caches: { gg: 'hhh', ddd: '' },
-};
-
-console.log(JSON.stringify(objectCompare(objet1, objet2)));
