@@ -10,16 +10,19 @@
 ### Maintainability
 [![Maintainability](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/maintainability)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/maintainability)
 
-### asciinema: An example of comparing flat json files and info
-https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD
+### Comparing flat json files and info
+[![asciicast](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD.svg)](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD)
 
-### asciinema: An example of comparing flat yaml files
-https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg
+### Comparing flat yaml files
+[![asciicast](https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg.svg)](https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg)
 
-Setup
+### Stylish form
+[![asciicast](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL.svg)](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL)
+
+## Setup
 
 make install
 
-Run tests
+## Run tests
 
 make test
