@@ -59,8 +59,7 @@ const buildStylishForm = (diffTree) => {
     return ['{', ...children, `${brackeIndent}}`].join('\n');
   };
 
-  const outputIndent = '\n';
-  return outputIndent + iter(diffTree);
+  return iter(diffTree);
 };
 
 export default buildStylishForm;

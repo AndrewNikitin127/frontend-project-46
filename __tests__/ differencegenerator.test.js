@@ -22,8 +22,7 @@ beforeAll(() => {
   pathYamlFile1 = getFixturePath('file1.yaml');
   pathYamlFile2 = getFixturePath('file2.yml');
 
-  expectedResult = `
-{
+  expectedResult = `{
     common: {
       + follow: false
         setting1: Value 1
