@@ -27,6 +27,14 @@ const objectStringify = (data, replacer = ' ', spaceCount = 1) => {
 
 const isNotNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => _.has(val, 'value');
+const getNodeLine = (node, indent, spaceCount, iterFunc) => {
+  if (node.type === 'changed') {
+    const oldline = `${indent}${statDisplay.removed}${node.name}: ${iterFunc(node.oldValue, spaceCount + 2)}\n`;
+    const newLine = `${indent}${statDisplay.added}${node.name}: ${iterFunc(node.newValue, spaceCount + 2)}`;
+    return oldline + newLine;
+  }
+  return `${indent}${statDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + 2)}`;
+};
 
 const buildStylishForm = (diffTree) => {
   const replacer = '  ';
@@ -44,14 +52,9 @@ const buildStylishForm = (diffTree) => {
       return theseisObjects(currentvalue.value)
         ? objectStringify(currentvalue.value, replacer, spaceCount) : `${currentvalue.value}`;
     }
-    const children = currentvalue.children.map((child) => {
-      if (child.type === 'changed') {
-        const oldline = `${currentIndent}${statDisplay.removed}${child.name}: ${iter(child.oldValue, spaceCount + 2)}\n`;
-        const newLine = `${currentIndent}${statDisplay.added}${child.name}: ${iter(child.newValue, spaceCount + 2)}`;
-        return oldline + newLine;
-      }
-      return `${currentIndent}${statDisplay[child.type]}${child.name}: ${iter(child, spaceCount + 2)}`;
-    });
+    const children = currentvalue.children.map(
+      (child) => getNodeLine(child, currentIndent, spaceCount, iter),
+    );
     return ['{', ...children, `${brackeIndent}}`].join('\n');
   };
   return iter(diffTree);
