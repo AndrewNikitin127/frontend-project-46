@@ -10,7 +10,7 @@
 ### Maintainability
 [![Maintainability](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/maintainability)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/maintainability)
 
-### Comparing flat json files and info
+### Comparing flat json files and get info
 [![asciicast](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD.svg)](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD)
 
 ### Comparing flat yaml files
