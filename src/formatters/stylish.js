@@ -6,18 +6,18 @@ const statDisplay = {
   removed: '- ',
   unchanged: '  ',
 };
-const getNameAndStatus = (name, status, indent = '') => `${indent}${status}${name}`;
+
 const isNotNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => _.has(val, 'value');
 const getNodeLine = (node, indent, spaceCount, iterFunc) => {
   if (node.type === 'changed') {
-    const oldline = `${getNameAndStatus(node.name, statDisplay.removed, indent)}`
+    const oldline = `${indent}${statDisplay.removed}${node.name}`
     + `: ${iterFunc(node.oldValue, spaceCount + 2)}`;
-    const newLine = `${getNameAndStatus(node.name, statDisplay.added, indent)}`
+    const newLine = `${indent}${statDisplay.added}${node.name}`
     + `: ${iterFunc(node.newValue, spaceCount + 2)}`;
     return `${oldline}\n${newLine}`;
   }
-  return `${getNameAndStatus(node.name, statDisplay[node.type], indent)}`
+  return `${indent}${statDisplay[node.type]}${node.name}`
   + `: ${iterFunc(node, spaceCount + 2)}`;
 };
 
@@ -30,7 +30,7 @@ const objectStringify = (data, replacer = ' ', spaceCount = 1) => {
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
     const lines = Object.entries(currentvalue).map(
-      ([key, val]) => `${getNameAndStatus(key, statDisplay.unchanged, currentIndent)}`
+      ([key, val]) => `${currentIndent}${statDisplay.unchanged}${key}`
       + `: ${iter(val, count + 2)}`,
     );
 
