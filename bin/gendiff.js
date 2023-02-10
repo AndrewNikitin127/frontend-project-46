@@ -9,7 +9,7 @@ program
   .description('Compares two configuration files and shows a difference.')
   .version('1.0.0', '-v, --vers', 'output the current version')
   .arguments('<filepath1> <filepath2>') // обязательно принимает минимум 2 аргумента
-  .option('-f, --format <type>', 'output format', 'standart') // указано значение по дефолту standart
+  .option('-f, --format <type>', 'output format', 'stylish') // указано значение по дефолту standart
   .action((filepath1, filepath2) => {
     console.log(gendiff(filepath1, filepath2));
   });
