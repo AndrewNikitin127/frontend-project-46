@@ -37,14 +37,12 @@ const buildStylishForm = (diffTree) => {
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isNotNode(currentvalue)) {
-      const result = theseisObjects(currentvalue)
+      return theseisObjects(currentvalue)
         ? objectStringify(currentvalue, replacer, spaceCount) : `${currentvalue}`;
-      return result;
     }
     if (isLeafNode(currentvalue)) {
-      const result = theseisObjects(currentvalue.value)
+      return theseisObjects(currentvalue.value)
         ? objectStringify(currentvalue.value, replacer, spaceCount) : `${currentvalue.value}`;
-      return result;
     }
     const children = currentvalue.children.map((child) => {
       if (child.type === 'changed') {
