@@ -7,7 +7,7 @@ const statDisplay = {
   unchanged: '  ',
 };
 
-const displayObjectAsValue = (data, replacer = ' ', spaceCount = 1) => {
+const objectStringify = (data, replacer = ' ', spaceCount = 1) => {
   const iter = (currentvalue, count = 1) => {
     if (!_.isObject(currentvalue)) return `${currentvalue}`;
 
@@ -25,6 +25,9 @@ const displayObjectAsValue = (data, replacer = ' ', spaceCount = 1) => {
   return iter(data, spaceCount);
 };
 
+const isNotNode = (val) => !_.has(val, 'type');
+const isLeafNode = (val) => _.has(val, 'value');
+
 const buildStylishForm = (diffTree) => {
   const replacer = '  ';
 
@@ -33,14 +36,14 @@ const buildStylishForm = (diffTree) => {
     const bracketSpaceCounter = spaceCount - 1;
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
-    if (!_.has(currentvalue, 'type')) {
+    if (isNotNode(currentvalue)) {
       const result = theseisObjects(currentvalue)
-        ? displayObjectAsValue(currentvalue, replacer, spaceCount) : `${currentvalue}`;
+        ? objectStringify(currentvalue, replacer, spaceCount) : `${currentvalue}`;
       return result;
     }
-    if (_.has(currentvalue, 'value')) {
+    if (isLeafNode(currentvalue)) {
       const result = theseisObjects(currentvalue.value)
-        ? displayObjectAsValue(currentvalue.value, replacer, spaceCount) : `${currentvalue.value}`;
+        ? objectStringify(currentvalue.value, replacer, spaceCount) : `${currentvalue.value}`;
       return result;
     }
     const children = currentvalue.children.map((child) => {
