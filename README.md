@@ -1,3 +1,12 @@
+
+## Setup
+
+make install
+
+## Run tests
+
+make test
+
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/AndrewNikitin127/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/AndrewNikitin127/frontend-project-46/actions)
 
@@ -18,11 +27,3 @@
 
 ### Stylish form
 [![asciicast](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL.svg)](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL)
-
-## Setup
-
-make install
-
-## Run tests
-
-make test
