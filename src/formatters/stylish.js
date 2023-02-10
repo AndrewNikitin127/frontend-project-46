@@ -35,14 +35,14 @@ const buildStylishForm = (diffTree) => {
 
     if (!_.has(currentvalue, 'type')) {
       if (theseisObjects(currentvalue)) {
-        return stringify(currentvalue, '  ', spaceCount);
+        return stringify(currentvalue, replacer, spaceCount);
       }
       return `${currentvalue}`;
     }
 
     if (_.has(currentvalue, 'value')) {
       if (theseisObjects(currentvalue.value)) {
-        return stringify(currentvalue.value, '  ', spaceCount);
+        return stringify(currentvalue.value, replacer, spaceCount);
       }
       return `${currentvalue.value}`;
     }
