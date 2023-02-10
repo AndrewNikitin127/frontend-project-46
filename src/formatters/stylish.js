@@ -6,6 +6,20 @@ const statDisplay = {
   removed: '- ',
   unchanged: '  ',
 };
+const getNameAndStatus = (name, status, indent = '') => `${indent}${status}${name}`;
+const isNotNode = (val) => !_.has(val, 'type');
+const isLeafNode = (val) => _.has(val, 'value');
+const getNodeLine = (node, indent, spaceCount, iterFunc) => {
+  if (node.type === 'changed') {
+    const oldline = `${getNameAndStatus(node.name, statDisplay.removed, indent)}`
+    + `: ${iterFunc(node.oldValue, spaceCount + 2)}`;
+    const newLine = `${getNameAndStatus(node.name, statDisplay.added, indent)}`
+    + `: ${iterFunc(node.newValue, spaceCount + 2)}`;
+    return `${oldline}\n${newLine}`;
+  }
+  return `${getNameAndStatus(node.name, statDisplay[node.type], indent)}`
+  + `: ${iterFunc(node, spaceCount + 2)}`;
+};
 
 const objectStringify = (data, replacer = ' ', spaceCount = 1) => {
   const iter = (currentvalue, count = 1) => {
@@ -16,24 +30,14 @@ const objectStringify = (data, replacer = ' ', spaceCount = 1) => {
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
     const lines = Object.entries(currentvalue).map(
-      ([key, val]) => `${currentIndent}${statDisplay.unchanged}${key}: ${iter(val, count + 2)}`,
+      ([key, val]) => `${getNameAndStatus(key, statDisplay.unchanged, currentIndent)}`
+      + `: ${iter(val, count + 2)}`,
     );
 
     const result = ['{', ...lines, `${brackeIndent}}`].join('\n');
     return result;
   };
   return iter(data, spaceCount);
-};
-
-const isNotNode = (val) => !_.has(val, 'type');
-const isLeafNode = (val) => _.has(val, 'value');
-const getNodeLine = (node, indent, spaceCount, iterFunc) => {
-  if (node.type === 'changed') {
-    const oldline = `${indent}${statDisplay.removed}${node.name}: ${iterFunc(node.oldValue, spaceCount + 2)}\n`;
-    const newLine = `${indent}${statDisplay.added}${node.name}: ${iterFunc(node.newValue, spaceCount + 2)}`;
-    return oldline + newLine;
-  }
-  return `${indent}${statDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + 2)}`;
 };
 
 const buildStylishForm = (diffTree) => {
