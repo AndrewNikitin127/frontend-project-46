@@ -14,5 +14,3 @@ const genDiff = (path1, path2) => {
 };
 
 export default genDiff;
-
-genDiff('/home/android127/frontend-project-46/__fixtures__/file1.json', '/home/android127/frontend-project-46/__fixtures__/file2.json');
