@@ -7,62 +7,62 @@ const statusDisplay = {
   unchanged: '  ',
 };
 
-const objectStringify = (object, replacer = ' ', numStartIndent = 1, indentIncreaser = 2) => {
-  const iter = (currentvalue, indentCount) => {
-    if (!_.isObject(currentvalue)) return `${currentvalue}`;
+const objectStringify = (object, replacer = ' ', numStartSpace = 1, spaceIncreaser = 1) => {
+  const iter = (currentValue, spaceCount) => {
+    if (!_.isObject(currentValue)) return `${currentValue}`;
 
-    const currentIndent = replacer.repeat(indentCount);
-    const bracketSpaceCounter = indentCount - 1;
-    const brackeIndent = replacer.repeat(bracketSpaceCounter);
+    const currentIndent = replacer.repeat(spaceCount);
+    const bracketSpaceCounter = spaceCount - 1;
+    const bracketIndent = replacer.repeat(bracketSpaceCounter);
 
-    const lines = Object.entries(currentvalue).map(
-      ([key, val]) => `${currentIndent}  ${key}: ${iter(val, indentCount + indentIncreaser)}`,
+    const lines = Object.entries(currentValue).map(
+      ([key, val]) => `${currentIndent}  ${key}: ${iter(val, spaceCount + spaceIncreaser)}`,
     );
 
-    const result = ['{', ...lines, `${brackeIndent}}`].join('\n');
+    const result = ['{', ...lines, `${bracketIndent}}`].join('\n');
     return result;
   };
-  return iter(object, numStartIndent);
+  return iter(object, numStartSpace);
 };
 
 const isValueInNode = (val) => !_.has(val, 'type');
-const isLeafNode = (val) => _.has(val, 'value');
+const isLeafNode = (val) => !_.has(val, 'children');
 
-const getNodeTextLine = (iterFunc, node, currentIndent, spaceCount, indentIncreaser = 2) => {
+const getNodeTextLine = (iterFunc, node, currentIndent, spaceCount, spaceIncreaser = 2) => {
   if (node.type === 'changed') {
-    const oldline = `${currentIndent}- ${node.name}: ${iterFunc(node.oldValue, spaceCount + indentIncreaser)}`;
-    const newLine = `${currentIndent}+ ${node.name}: ${iterFunc(node.newValue, spaceCount + indentIncreaser)}`;
+    const oldline = `${currentIndent}- ${node.name}: ${iterFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
+    const newLine = `${currentIndent}+ ${node.name}: ${iterFunc(node.newValue, spaceCount + spaceIncreaser)}`;
     return `${oldline}\n${newLine}`;
   }
-  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + indentIncreaser)}`;
+  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + spaceIncreaser)}`;
 };
 
 const buildStylishForm = (diffTree) => {
   const replacer = '  ';
-  const numStartIndent = 1;
-  const indentIncreaser = 2;
+  const numStartSpace = 1;
+  const spaceIncreaser = 2;
 
-  const iter = (currentValue, indentСounter) => {
-    const currentIndent = replacer.repeat(indentСounter);
-    const bracketSpaceCounter = indentСounter - 1;
-    const brackeIndent = replacer.repeat(bracketSpaceCounter);
+  const iter = (currentValue, spaceСounter) => {
+    const currentIndent = replacer.repeat(spaceСounter);
+    const bracketSpaceCounter = spaceСounter - 1;
+    const bracketIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isValueInNode(currentValue)) {
       return theseisObjects(currentValue)
-        ? objectStringify(currentValue, replacer, indentСounter, indentIncreaser)
+        ? objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser)
         : `${currentValue}`;
     }
     if (isLeafNode(currentValue)) {
       return theseisObjects(currentValue.value)
-        ? objectStringify(currentValue.value, replacer, indentСounter, indentIncreaser)
+        ? objectStringify(currentValue.value, replacer, spaceСounter, spaceIncreaser)
         : `${currentValue.value}`;
     }
     const children = currentValue.children.map(
-      (child) => getNodeTextLine(iter, child, currentIndent, indentСounter, indentIncreaser),
+      (child) => getNodeTextLine(iter, child, currentIndent, spaceСounter, spaceIncreaser),
     );
-    return ['{', ...children, `${brackeIndent}}`].join('\n');
+    return ['{', ...children, `${bracketIndent}}`].join('\n');
   };
-  return iter(diffTree, numStartIndent);
+  return iter(diffTree, numStartSpace);
 };
 
 export default buildStylishForm;

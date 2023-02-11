@@ -3,12 +3,17 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import gendiff from '../src/ differencegenerator.js';
 
-let pathJsonFile1;
-let pathJsonFile2;
-let pathYamlFile1;
-let pathYamlFile2;
+const pathFile = {
+  json1: '',
+  json2: '',
+  yaml1: '',
+  yaml2: '',
+};
 
-let expectedResult;
+const result = {
+  stylish: '',
+  plain: '',
+};
 
 beforeAll(() => {
   const getFixturePath = (filename) => {
@@ -17,12 +22,12 @@ beforeAll(() => {
     return path.join(__dirname, '..', '__fixtures__', filename);
   };
 
-  pathJsonFile1 = getFixturePath('file1.json');
-  pathJsonFile2 = getFixturePath('file2.json');
-  pathYamlFile1 = getFixturePath('file1.yaml');
-  pathYamlFile2 = getFixturePath('file2.yml');
+  pathFile.json1 = getFixturePath('file1.json');
+  pathFile.json2 = getFixturePath('file2.json');
+  pathFile.yaml1 = getFixturePath('file1.yaml');
+  pathFile.yaml2 = getFixturePath('file2.yml');
 
-  expectedResult = `{
+  result.stylish = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -66,9 +71,31 @@ beforeAll(() => {
         fee: 100500
     }
 }`;
+
+  result.plain = `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`;
 });
 
-test('finding and displaying file differences', () => {
-  expect(gendiff(pathJsonFile1, pathJsonFile2)).toBe(expectedResult);
-  expect(gendiff(pathYamlFile1, pathYamlFile2)).toBe(expectedResult);
+test('displaying file differences in default form', () => {
+  expect(gendiff(pathFile.json1, pathFile.json2)).toBe(result.stylish);
+  expect(gendiff(pathFile.yaml1, pathFile.yaml2)).toBe(result.stylish);
+});
+
+test('displaying file differences in stylish form', () => {
+  expect(gendiff(pathFile.json1, pathFile.json2, 'stylish')).toBe(result.stylish);
+  expect(gendiff(pathFile.yaml1, pathFile.yaml2, 'stylish')).toBe(result.stylish);
+});
+
+test('displaying file differences in plain form', () => {
+  expect(gendiff(pathFile.json1, pathFile.json2, 'plain')).toBe(result.plain);
+  expect(gendiff(pathFile.yaml1, pathFile.yaml2, 'plain')).toBe(result.plain);
 });

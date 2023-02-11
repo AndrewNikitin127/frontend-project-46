@@ -1,22 +1,36 @@
 import _ from 'lodash';
 
+const isLeafNode = (val) => !_.has(val, 'children');
 
+const getValueDisplay = (val) => {
+  if (_.isObject(val)) return '[complex value]';
+  if (_.isString(val)) return `'${val}'`;
+  return val;
+};
 
+const getNodeChanges = (node, ancestry) => {
+  if (node.type === 'added') {
+    return `Property '${ancestry}' was added with value: ${getValueDisplay(node.value)}`;
+  } if (node.type === 'changed') {
+    return `Property '${ancestry}' was updated. From ${getValueDisplay(node.oldValue)} to ${getValueDisplay(node.newValue)}`;
+  } if (node.type === 'removed') {
+    return `Property '${ancestry}' was removed`;
+  } return [];
+};
 
+const buildPlainForm = (diffTree) => {
+  const iter = (node, ancestry = '') => {
+    const newAncestry = ancestry ? [ancestry, node.name].join('.') : node.name;
 
+    if (isLeafNode(node)) return getNodeChanges(node, newAncestry);
 
-const findFilesByName = (tree, substr) => {
-    const iter = (node, ancestry) => {
-      const name = getName(node);
-      const newAncestry = path.join(ancestry, name);
-      if (isFile(node)) {
-        return name.includes(substr) ? newAncestry : [];
-      }
-      const children = getChildren(node);
-      return children.flatMap((child) => iter(child, newAncestry));
-    };
-  
-  
-    return iter(tree, '');
+    return node.children
+      .flatMap((child) => iter(child, newAncestry))
+      .map((value) => value.replace(`${diffTree.name}.`, ''))
+      .join('\n');
   };
-  
+
+  return iter(diffTree);
+};
+
+export default buildPlainForm;
