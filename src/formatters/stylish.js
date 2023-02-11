@@ -1,14 +1,14 @@
 import _ from 'lodash';
 import { theseisObjects } from '../tools.js';
 
-const statDisplay = {
+const statusDisplay = {
   added: '+ ',
   removed: '- ',
   unchanged: '  ',
 };
 
-const objectStringify = (data, replacer = ' ', indentСounter = 1, indentProg = 2) => {
-  const iter = (currentvalue, indentCount = 1) => {
+const objectStringify = (object, replacer = ' ', numStartIndent = 1, indentIncreaser = 2) => {
+  const iter = (currentvalue, indentCount) => {
     if (!_.isObject(currentvalue)) return `${currentvalue}`;
 
     const currentIndent = replacer.repeat(indentCount);
@@ -16,49 +16,53 @@ const objectStringify = (data, replacer = ' ', indentСounter = 1, indentProg = 
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
     const lines = Object.entries(currentvalue).map(
-      ([key, val]) => `${currentIndent}  ${key}: ${iter(val, indentCount + indentProg)}`,
+      ([key, val]) => `${currentIndent}  ${key}: ${iter(val, indentCount + indentIncreaser)}`,
     );
 
     const result = ['{', ...lines, `${brackeIndent}}`].join('\n');
     return result;
   };
-  return iter(data, indentСounter);
+  return iter(object, numStartIndent);
 };
 
 const isValueInNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => _.has(val, 'value');
 
-const getNodeTextLine = (iterFunc, node, indent, spaceCount, indentProg = 2) => {
+const getNodeTextLine = (iterFunc, node, currentIndent, spaceCount, indentIncreaser = 2) => {
   if (node.type === 'changed') {
-    const oldline = `${indent}- ${node.name}: ${iterFunc(node.oldValue, spaceCount + indentProg)}`;
-    const newLine = `${indent}+ ${node.name}: ${iterFunc(node.newValue, spaceCount + indentProg)}`;
+    const oldline = `${currentIndent}- ${node.name}: ${iterFunc(node.oldValue, spaceCount + indentIncreaser)}`;
+    const newLine = `${currentIndent}+ ${node.name}: ${iterFunc(node.newValue, spaceCount + indentIncreaser)}`;
     return `${oldline}\n${newLine}`;
   }
-  return `${indent}${statDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + indentProg)}`;
+  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + indentIncreaser)}`;
 };
 
-const buildStylishForm = (diffTree, replacer = '  ', indentationProgress = 2) => {
-  const iter = (currentValue, indentСounter = 1) => {
+const buildStylishForm = (diffTree) => {
+  const replacer = '  ';
+  const numStartIndent = 1;
+  const indentIncreaser = 2;
+
+  const iter = (currentValue, indentСounter) => {
     const currentIndent = replacer.repeat(indentСounter);
     const bracketSpaceCounter = indentСounter - 1;
     const brackeIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isValueInNode(currentValue)) {
       return theseisObjects(currentValue)
-        ? objectStringify(currentValue, replacer, indentСounter, indentationProgress)
+        ? objectStringify(currentValue, replacer, indentСounter, indentIncreaser)
         : `${currentValue}`;
     }
     if (isLeafNode(currentValue)) {
       return theseisObjects(currentValue.value)
-        ? objectStringify(currentValue.value, replacer, indentСounter, indentationProgress)
+        ? objectStringify(currentValue.value, replacer, indentСounter, indentIncreaser)
         : `${currentValue.value}`;
     }
     const children = currentValue.children.map(
-      (child) => getNodeTextLine(iter, child, currentIndent, indentСounter, indentationProgress),
+      (child) => getNodeTextLine(iter, child, currentIndent, indentСounter, indentIncreaser),
     );
     return ['{', ...children, `${brackeIndent}}`].join('\n');
   };
-  return iter(diffTree);
+  return iter(diffTree, numStartIndent);
 };
 
 export default buildStylishForm;
