@@ -3,17 +3,9 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import gendiff from '../src/ differencegenerator.js';
 
-const pathFile = {
-  json1: '',
-  json2: '',
-  yaml1: '',
-  yaml2: '',
-};
+const pathFile = {};
 
-const result = {
-  stylish: '',
-  plain: '',
-};
+const result = {};
 
 beforeAll(() => {
   const getFixturePath = (filename) => {
