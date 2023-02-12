@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 const isLeafNode = (val) => !_.has(val, 'children');
+const getRootNodeName = (tree) => tree.name;
 
 const getValueDisplay = (val) => {
   if (_.isObject(val)) return '[complex value]';
@@ -8,7 +9,7 @@ const getValueDisplay = (val) => {
   return val;
 };
 
-const getNodeChanges = (node, ancestry) => {
+const getReportNodeChanges = (node, ancestry) => {
   if (node.type === 'added') {
     return `Property '${ancestry}' was added with value: ${getValueDisplay(node.value)}`;
   } if (node.type === 'changed') {
@@ -22,11 +23,11 @@ const buildPlainForm = (diffTree) => {
   const iter = (node, ancestry = '') => {
     const newAncestry = ancestry ? [ancestry, node.name].join('.') : node.name;
 
-    if (isLeafNode(node)) return getNodeChanges(node, newAncestry);
+    if (isLeafNode(node)) return getReportNodeChanges(node, newAncestry);
 
     return node.children
       .flatMap((child) => iter(child, newAncestry))
-      .map((value) => value.replace(`${diffTree.name}.`, ''))
+      .map((reportLine) => reportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
       .join('\n');
   };
 

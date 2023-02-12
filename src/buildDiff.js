@@ -30,7 +30,7 @@ const buildDiffTree = (object1, object2) => {
     });
   };
 
-  return { name: '/', type: 'node', children: buildDiffObjects(object1, object2) };
+  return { name: '/', type: 'root', children: buildDiffObjects(object1, object2) };
 };
 
 export default buildDiffTree;
