@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { isObject } from './tools.js';
+import { isObjectObject } from './tools.js';
 
 /* const getStatus = (obj1, obj2, key) => {
   if (!_.has(obj1, key)) return 'added';
@@ -13,7 +13,7 @@ const buildDiffTree = (object1, object2) => {
     const allSortsKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
 
     return allSortsKeys.flatMap((key) => {
-      if (isObject(obj1[key]) && isObject(obj2[key])) {
+      if (isObjectObject(obj1[key]) && isObjectObject(obj2[key])) {
         return { name: key, type: 'unchanged', children: buildDiffObjects(obj1[key], obj2[key]) };
       }
       if (!_.has(obj1, key)) {

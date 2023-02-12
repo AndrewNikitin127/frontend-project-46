@@ -8,8 +8,8 @@ const readFile = (filePath) => {
   return data;
 };
 /** is object & not array */
-const isObject = (object) => _.isObject(object) && !Array.isArray(object);
+const isObjectObject = (object) => _.isObject(object) && !Array.isArray(object);
 
 const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
-export { readFile, isObject, getFileFormat };
+export { readFile, isObjectObject, getFileFormat };
