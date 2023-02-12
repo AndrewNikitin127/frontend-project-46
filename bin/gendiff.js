@@ -10,7 +10,7 @@ program
   .version('1.0.0', '-v, --vers', 'output the current version')
   .arguments('<filepath1> <filepath2>')
   .addOption(new Option('-f, --format <type>', 'output format')
-    .choices(['stylish', 'plain', 'JSON']).default('stylish'))
+    .choices(['stylish', 'plain', 'json']).default('stylish'))
   .action((filepath1, filepath2, option) => {
     console.log(gendiff(filepath1, filepath2, option.format));
   });
