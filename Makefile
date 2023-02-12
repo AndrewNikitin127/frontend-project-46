@@ -1,8 +1,5 @@
 install: install-deps
-###	npx simple-git-hooks
-
-run:
-	bin/gendiff.js
+	npm link
 
 install-deps:
 	npm ci
@@ -18,5 +15,3 @@ lint:
 
 publish:
 	npm publish --dry-run
-
-###.PHONY: test
