@@ -3,9 +3,13 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import gendiff from '../src/ differencegenerator.js';
 
-const pathFile = {};
+let jsonPath1;
+let jsonPath2;
+let yamlPath1;
+let ymlPath2;
 
-const result = {};
+let stylishResult;
+let plainResult;
 
 beforeAll(() => {
   const getFixturePath = (filename) => {
@@ -14,12 +18,12 @@ beforeAll(() => {
     return path.join(__dirname, '..', '__fixtures__', filename);
   };
 
-  pathFile.json1 = getFixturePath('file1.json');
-  pathFile.json2 = getFixturePath('file2.json');
-  pathFile.yaml1 = getFixturePath('file1.yaml');
-  pathFile.yaml2 = getFixturePath('file2.yml');
+  jsonPath1 = getFixturePath('file1.json');
+  jsonPath2 = getFixturePath('file2.json');
+  yamlPath1 = getFixturePath('file1.yaml');
+  ymlPath2 = getFixturePath('file2.yml');
 
-  result.stylish = `{
+  stylishResult = `{
     common: {
       + follow: false
         setting1: Value 1
@@ -64,7 +68,7 @@ beforeAll(() => {
     }
 }`;
 
-  result.plain = `Property 'common.follow' was added with value: false
+  plainResult = `Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -78,16 +82,16 @@ Property 'group3' was added with value: [complex value]`;
 });
 
 test('displaying file differences in default form', () => {
-  expect(gendiff(pathFile.json1, pathFile.json2)).toBe(result.stylish);
-  expect(gendiff(pathFile.yaml1, pathFile.yaml2)).toBe(result.stylish);
+  expect(gendiff(jsonPath1, jsonPath2)).toBe(stylishResult);
+  expect(gendiff(yamlPath1, ymlPath2)).toBe(stylishResult);
 });
 
 test('displaying file differences in stylish form', () => {
-  expect(gendiff(pathFile.json1, pathFile.json2, 'stylish')).toBe(result.stylish);
-  expect(gendiff(pathFile.yaml1, pathFile.yaml2, 'stylish')).toBe(result.stylish);
+  expect(gendiff(jsonPath1, jsonPath2, 'stylish')).toBe(stylishResult);
+  expect(gendiff(yamlPath1, ymlPath2, 'stylish')).toBe(stylishResult);
 });
 
 test('displaying file differences in plain form', () => {
-  expect(gendiff(pathFile.json1, pathFile.json2, 'plain')).toBe(result.plain);
-  expect(gendiff(pathFile.yaml1, pathFile.yaml2, 'plain')).toBe(result.plain);
+  expect(gendiff(jsonPath1, jsonPath2, 'plain')).toBe(plainResult);
+  expect(gendiff(yamlPath1, ymlPath2, 'plain')).toBe(plainResult);
 });
