@@ -1,11 +1,20 @@
+## Program "Difference generator". 
+
+Compares two configuration files and shows a difference. Supports json, yaml, yml formats.
 
 ## Setup
 
 make install
 
+## Get more information about the program
+
+gendiff --help
+
 ## Run program
 
-gendiff [pathfile1] [pathfile2]
+gendiff [filepath] [filepath]
+
+//The path to the file can be absolute or relative
 
 ## Run tests
 
@@ -23,11 +32,16 @@ make test
 ### Maintainability
 [![Maintainability](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/maintainability)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/maintainability)
 
+### Stylish output form (default)
+[![asciicast](https://asciinema.org/a/qqpg388D3F0FwdwOaQCWm1TmJ.svg)](https://asciinema.org/a/qqpg388D3F0FwdwOaQCWm1TmJ)
+
+### Plain output form 
+[![asciicast](https://asciinema.org/a/WnntMRdJc5qGMMem65mzqDMwV.svg)](https://asciinema.org/a/WnntMRdJc5qGMMem65mzqDMwV)
+
 ### Comparing flat json files and get info
 [![asciicast](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD.svg)](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD)
 
 ### Comparing flat yaml files
 [![asciicast](https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg.svg)](https://asciinema.org/a/wnJBQwpIGzTeZcUbbrxKOu2Yg)
 
-### Stylish form
-[![asciicast](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL.svg)](https://asciinema.org/a/OCVnTosKistfH4PpW9Q4eAByL)
+
