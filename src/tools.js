@@ -7,10 +7,9 @@ const readFile = (filePath) => {
   const data = fs.readFileSync(fullPath, 'UTF-8');
   return data;
 };
-const theseisObjects = (...objects) => {
-  const result = objects.every((object) => _.isObject(object) && !Array.isArray(object));
-  return result;
-};
+/** is object & not array */
+const isObject = (object) => _.isObject(object) && !Array.isArray(object);
+
 const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
-export { readFile, theseisObjects, getFileFormat };
+export { readFile, isObject, getFileFormat };

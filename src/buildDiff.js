@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { theseisObjects } from './tools.js';
+import { isObject } from './tools.js';
 
 const getStatus = (obj1, obj2, key) => {
   if (!_.has(obj1, key)) return 'added';
@@ -15,7 +15,7 @@ const buildDiffTree = (object1, object2) => {
     return allSortsKeys.flatMap((key) => {
       const acc = { name: key, type: getStatus(obj1, obj2, key) };
 
-      if (theseisObjects(obj1[key], obj2[key])) {
+      if (isObject(obj1[key]) && isObject(obj2[key])) {
         acc.type = 'unchanged';
         acc.children = buildDiffObjects(obj1[key], obj2[key]);
       } else if (acc.type === 'added') {
