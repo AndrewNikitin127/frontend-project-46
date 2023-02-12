@@ -27,7 +27,7 @@ const buildPlainForm = (diffTree) => {
 
     return node.children
       .flatMap((child) => iter(child, newAncestry))
-      .map((reportLine) => reportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
+      .map((plainStyleReportLine) => plainStyleReportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
       .join('\n');
   };
 
