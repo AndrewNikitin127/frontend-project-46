@@ -14,6 +14,8 @@ gendiff --help
 
 gendiff [filepath] [filepath]
 
+## Program run features
+
 The path to the file can be absolute or relative
 
 ## Run tests
