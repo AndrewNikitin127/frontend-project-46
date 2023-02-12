@@ -72,6 +72,8 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
+  const jsonResult = '{"name":"/","type":"root","children":[{"name":"common","type":"unchanged","children":[{"name":"follow","type":"added","value":false},{"name":"setting1","type":"unchanged","value":"Value 1"},{"name":"setting2","type":"removed","value":200},{"name":"setting3","type":"changed","oldValue":true,"newValue":null},{"name":"setting4","type":"added","value":"blah blah"},{"name":"setting5","type":"added","value":{"key5":"value5"}},{"name":"setting6","type":"unchanged","children":[{"name":"doge","type":"unchanged","children":[{"name":"wow","type":"changed","oldValue":"","newValue":"so much"}]},{"name":"key","type":"unchanged","value":"value"},{"name":"ops","type":"added","value":"vops"}]}]},{"name":"group1","type":"unchanged","children":[{"name":"baz","type":"changed","oldValue":"bas","newValue":"bars"},{"name":"foo","type":"unchanged","value":"bar"},{"name":"nest","type":"changed","oldValue":{"key":"value"},"newValue":"str"}]},{"name":"group2","type":"removed","value":{"abc":12345,"deep":{"id":45}}},{"name":"group3","type":"added","value":{"deep":{"id":{"number":45}},"fee":100500}}]}';
+
   test('displaying file differences in default form', () => {
     expect(gendiff(jsonPath1, jsonPath2)).toBe(stylishResult);
     expect(gendiff(yamlPath1, ymlPath2)).toBe(stylishResult);
@@ -85,5 +87,10 @@ Property 'group3' was added with value: [complex value]`;
   test('displaying file differences in plain form', () => {
     expect(gendiff(jsonPath1, jsonPath2, 'plain')).toBe(plainResult);
     expect(gendiff(yamlPath1, ymlPath2, 'plain')).toBe(plainResult);
+  });
+
+  test('displaying file differences in json form', () => {
+    expect(gendiff(jsonPath1, jsonPath2, 'json')).toBe(jsonResult);
+    expect(gendiff(yamlPath1, ymlPath2, 'json')).toBe(jsonResult);
   });
 });
