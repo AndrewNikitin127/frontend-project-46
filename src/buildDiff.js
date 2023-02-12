@@ -10,7 +10,7 @@ const getStatus = (obj1, obj2, key) => {
 
 const buildDiffTree = (object1, object2) => {
   const buildDiffObjects = (obj1, obj2) => {
-    const allSortsKeys = _.union(_.keys(obj1), _.keys(obj2)).sort();
+    const allSortsKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
 
     return allSortsKeys.flatMap((key) => {
       const acc = { name: key, type: getStatus(obj1, obj2, key) };
