@@ -3,6 +3,10 @@
 
 make install
 
+## Run program
+
+gendiff [pathfile1] [pathfile2]
+
 ## Run tests
 
 make test
