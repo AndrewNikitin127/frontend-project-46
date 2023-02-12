@@ -5,7 +5,7 @@ const buildDiffTree = (object1, object2) => {
   const buildDiffNodes = (obj1, obj2) => {
     const allSortsKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
 
-    return allSortsKeys.flatMap((key) => {
+    return allSortsKeys.map((key) => {
       if (isObjectObject(obj1[key]) && isObjectObject(obj2[key])) {
         return { name: key, type: 'unchanged', children: buildDiffNodes(obj1[key], obj2[key]) };
       }
