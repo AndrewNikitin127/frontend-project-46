@@ -1,6 +1,6 @@
-## Program "Difference generator". 
+# Program "Difference generator" 
 
-Compares two configuration files and shows a difference. Supports json, yaml, yml formats.
+##### Compares two configuration files and shows a difference. Supports json, yaml, yml formats.
 
 ## Setup
 
@@ -14,7 +14,7 @@ gendiff --help
 
 gendiff [filepath] [filepath]
 
-//The path to the file can be absolute or relative
+##### The path to the file can be absolute or relative
 
 ## Run tests
 
