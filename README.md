@@ -25,13 +25,13 @@ make test
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/AndrewNikitin127/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/AndrewNikitin127/frontend-project-46/actions)
 
-### Check dependences, linter, tests
+### Check dependences, linter, tests status:
 [![Node CI](https://github.com/AndrewNikitin127/frontend-project-46/actions/workflows/nodejs.yml/badge.svg)](https://github.com/AndrewNikitin127/frontend-project-46/actions/workflows/nodejs.yml)
 
-### Test Coverage
+### Test Coverage status:
 [![Test Coverage](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/test_coverage)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/test_coverage)
 
-### Maintainability
+### Maintainability status:
 [![Maintainability](https://api.codeclimate.com/v1/badges/68f80725cd21bde37738/maintainability)](https://codeclimate.com/github/AndrewNikitin127/frontend-project-46/maintainability)
 
 ### Stylish output form (default)
