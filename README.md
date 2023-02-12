@@ -11,11 +11,10 @@ make install
 gendiff --help
 
 ## Run program
-#### The path to the file can be absolute or relative
 
 gendiff [filepath] [filepath]
 
-#### The path to the file can be absolute or relative
+The path to the file can be absolute or relative
 
 ## Run tests
 
