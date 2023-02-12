@@ -1,6 +1,6 @@
 # Program "Difference generator" 
 
-#### Compares two configuration files and shows a difference. Supports json, yaml, yml formats.
+#### Compares two configuration files and shows a difference. Supports formats: json, yaml, yml
 
 ## Setup
 
@@ -39,6 +39,9 @@ make test
 
 ### Plain output form 
 [![asciicast](https://asciinema.org/a/WnntMRdJc5qGMMem65mzqDMwV.svg)](https://asciinema.org/a/WnntMRdJc5qGMMem65mzqDMwV)
+
+### Json output form
+[![asciicast](https://asciinema.org/a/RinQANEmjJZbf0Gy8JQCGa3w1.svg)](https://asciinema.org/a/RinQANEmjJZbf0Gy8JQCGa3w1)
 
 ### Comparing flat json files and get info
 [![asciicast](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD.svg)](https://asciinema.org/a/I0xN795j4Rk20tcUYC99xf3lD)
