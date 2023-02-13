@@ -10,13 +10,13 @@ const statusDisplay = {
 const isValueInNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => !_.has(val, 'children');
 
-const getNodeTextLine = (iterFunc, node, currentIndent, spaceCount, spaceIncreaser = 2) => {
+const getNodeTextLine = (createFunc, node, currentIndent, spaceCount, spaceIncreaser = 2) => {
   if (node.type === 'changed') {
-    const oldline = `${currentIndent}- ${node.name}: ${iterFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
-    const newLine = `${currentIndent}+ ${node.name}: ${iterFunc(node.newValue, spaceCount + spaceIncreaser)}`;
+    const oldline = `${currentIndent}- ${node.name}: ${createFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
+    const newLine = `${currentIndent}+ ${node.name}: ${createFunc(node.newValue, spaceCount + spaceIncreaser)}`;
     return `${oldline}\n${newLine}`;
   }
-  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${iterFunc(node, spaceCount + spaceIncreaser)}`;
+  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${createFunc(node, spaceCount + spaceIncreaser)}`;
 };
 
 const buildStylishForm = (diffTree) => {
@@ -24,7 +24,7 @@ const buildStylishForm = (diffTree) => {
   const numStartSpace = 1;
   const spaceIncreaser = 2;
 
-  const iter = (currentValue, spaceСounter) => {
+  const createStylish = (currentValue, spaceСounter) => {
     const currentIndent = replacer.repeat(spaceСounter);
     const bracketSpaceCounter = spaceСounter - 1;
     const bracketIndent = replacer.repeat(bracketSpaceCounter);
@@ -40,11 +40,11 @@ const buildStylishForm = (diffTree) => {
         : `${currentValue.value}`;
     }
     const children = currentValue.children.map(
-      (child) => getNodeTextLine(iter, child, currentIndent, spaceСounter, spaceIncreaser),
+      (child) => getNodeTextLine(createStylish, child, currentIndent, spaceСounter, spaceIncreaser),
     );
     return ['{', ...children, `${bracketIndent}}`].join('\n');
   };
-  return iter(diffTree, numStartSpace);
+  return createStylish(diffTree, numStartSpace);
 };
 
 export default buildStylishForm;
