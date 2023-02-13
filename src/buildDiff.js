@@ -8,12 +8,12 @@ const buildDiffTree = (object1, object2) => {
     name, type, oldValue, newValue,
   });
 
-  const buildDiffNodes = (obj1, obj2) => {
+  const createNodesOfDifference = (obj1, obj2) => {
     const allSortsKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
 
     return allSortsKeys.map((key) => {
       if (isObjectObject(obj1[key]) && isObjectObject(obj2[key])) {
-        return getParentNode(key, 'unchanged', buildDiffNodes(obj1[key], obj2[key]));
+        return getParentNode(key, 'unchanged', createNodesOfDifference(obj1[key], obj2[key]));
       }
       if (!_.has(obj1, key)) {
         return getLeafNode(key, 'added', obj2[key]);
@@ -28,7 +28,7 @@ const buildDiffTree = (object1, object2) => {
     });
   };
 
-  return getParentNode('/', 'root', buildDiffNodes(object1, object2));
+  return getParentNode('/', 'root', createNodesOfDifference(object1, object2));
 };
 
 export default buildDiffTree;
