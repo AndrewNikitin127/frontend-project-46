@@ -3,13 +3,16 @@ import parse from './parsers.js';
 import buildDiffTree from './buildDiff.js';
 import getDiffInForm from './formatters/index.js';
 
+const objectsAreValid = (obj1, obj2) => isObjectObject(obj1) && isObjectObject(obj2);
+
 const genDiff = (path1, path2, formatName = 'stylish') => {
   const objData1 = parse(readFile(path1), getFileFormat(path1));
   const objData2 = parse(readFile(path2), getFileFormat(path2));
 
-  if (!isObjectObject(objData1) || !isObjectObject(objData2)) {
-    return 'unknown file format';
+  if (!objectsAreValid(objData1, objData2)) {
+    return 'unknown file format or path';
   }
+
   const diffTree = buildDiffTree(objData1, objData2);
 
   return getDiffInForm(diffTree, formatName);
