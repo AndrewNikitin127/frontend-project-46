@@ -2,11 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 
-const readFile = (filePath) => {
-  const fullPath = path.resolve(process.cwd(), filePath);
-  const data = fs.readFileSync(fullPath, 'UTF-8');
-  return data;
-};
+const buildFullPath = (filePath) => path.resolve(process.cwd(), filePath);
+
+const readFile = (fullPath) => fs.readFileSync(fullPath, 'UTF-8');
 
 const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
@@ -29,5 +27,5 @@ const objectStringify = (object, replacer = ' ', numStartSpace = 1, spaceIncreas
 };
 
 export {
-  readFile, getFileFormat, objectStringify,
+  readFile, buildFullPath, getFileFormat, objectStringify,
 };
