@@ -1,9 +1,8 @@
 import _ from 'lodash';
 
 const isLeafNode = (val) => !_.has(val, 'children');
-const getRootNodeName = (tree) => tree.name;
 
-const getValueDisplay = (val) => {
+const getValueText = (val) => {
   if (_.isObject(val)) return '[complex value]';
   if (_.isString(val)) return `'${val}'`;
   return val;
@@ -11,9 +10,9 @@ const getValueDisplay = (val) => {
 
 const getReportNodeChanges = (node, ancestry) => {
   if (node.type === 'added') {
-    return `Property '${ancestry}' was added with value: ${getValueDisplay(node.value)}`;
+    return `Property '${ancestry}' was added with value: ${getValueText(node.value)}`;
   } if (node.type === 'changed') {
-    return `Property '${ancestry}' was updated. From ${getValueDisplay(node.oldValue)} to ${getValueDisplay(node.newValue)}`;
+    return `Property '${ancestry}' was updated. From ${getValueText(node.oldValue)} to ${getValueText(node.newValue)}`;
   } if (node.type === 'removed') {
     return `Property '${ancestry}' was removed`;
   } return [];
@@ -27,11 +26,11 @@ const buildPlainForm = (diffTree) => {
 
     return node.children
       .flatMap((child) => iter(child, newAncestry))
-      .map((plainStyleReportLine) => plainStyleReportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
       .join('\n');
   };
 
-  return iter(diffTree);
+  const resultTextLines = diffTree.children.map((node) => iter(node));
+  return resultTextLines.join('\n');
 };
 
 export default buildPlainForm;
