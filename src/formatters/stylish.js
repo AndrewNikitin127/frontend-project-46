@@ -14,6 +14,14 @@ const getTextLines = (currentValue, replacer, spaceСounter, spaceIncreaser) => 
   if (!_.isPlainObject(currentValue)) return `${currentValue}`;
   return objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser);
 };
+const getNodeTextLine = (createFunc, node, currentIndent, spaceCount, spaceIncreaser = 2) => {
+  if (node.type === 'changed') {
+    const oldline = `${currentIndent}- ${node.name}: ${createFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
+    const newLine = `${currentIndent}+ ${node.name}: ${createFunc(node.newValue, spaceCount + spaceIncreaser)}`;
+    return `${oldline}\n${newLine}`;
+  }
+  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${createFunc(node, spaceCount + spaceIncreaser)}`;
+};
 
 const buildStylishForm = (diffTree) => {
   const replacer = '  ';
@@ -31,14 +39,9 @@ const buildStylishForm = (diffTree) => {
     if (isLeafNode(currentValue)) {
       return getTextLines(currentValue.value, replacer, spaceСounter, spaceIncreaser);
     }
-    const children = currentValue.children.map((child) => {
-      if (child.type === 'changed') {
-        const oldline = `${currentIndent}- ${child.name}: ${iterStylish(child.oldValue, spaceСounter + spaceIncreaser)}`;
-        const newLine = `${currentIndent}+ ${child.name}: ${iterStylish(child.newValue, spaceСounter + spaceIncreaser)}`;
-        return `${oldline}\n${newLine}`;
-      }
-      return `${currentIndent}${statusDisplay[child.type]}${child.name}: ${iterStylish(child, spaceСounter + spaceIncreaser)}`;
-    });
+    const children = currentValue.children.map((child) => (
+      getNodeTextLine(iterStylish, child, currentIndent, spaceСounter, spaceIncreaser)
+    ));
     return ['{', ...children, `${bracketIndent}}`].join('\n');
   };
   return iterStylish(diffTree, numStartSpace);
