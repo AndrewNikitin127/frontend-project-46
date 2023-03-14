@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { isObjectObject } from './tools.js';
 
 const buildDiffTree = (object1, object2) => {
   const getParentNode = (name, type, children) => ({ name, type, children });
@@ -12,7 +11,7 @@ const buildDiffTree = (object1, object2) => {
     const allSortsKeys = _.sortBy(_.union(_.keys(obj1), _.keys(obj2)));
 
     return allSortsKeys.map((key) => {
-      if (isObjectObject(obj1[key]) && isObjectObject(obj2[key])) {
+      if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
         return getParentNode(key, 'unchanged', createNodesOfDifference(obj1[key], obj2[key]));
       }
       if (!_.has(obj1, key)) {

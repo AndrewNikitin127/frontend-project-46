@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { isObjectObject, objectStringify } from '../tools.js';
+import { objectStringify } from '../tools.js';
 
 const statusDisplay = {
   added: '+ ',
@@ -30,12 +30,12 @@ const buildStylishForm = (diffTree) => {
     const bracketIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isValueInNode(currentValue)) {
-      return isObjectObject(currentValue)
+      return _.isPlainObject(currentValue)
         ? objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser)
         : `${currentValue}`;
     }
     if (isLeafNode(currentValue)) {
-      return isObjectObject(currentValue.value)
+      return _.isPlainObject(currentValue.value)
         ? objectStringify(currentValue.value, replacer, spaceСounter, spaceIncreaser)
         : `${currentValue.value}`;
     }

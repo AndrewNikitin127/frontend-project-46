@@ -7,8 +7,6 @@ const readFile = (filePath) => {
   const data = fs.readFileSync(fullPath, 'UTF-8');
   return data;
 };
-/** is object & not array */
-const isObjectObject = (object) => _.isObject(object) && !Array.isArray(object);
 
 const getFileFormat = (filePath) => path.extname(path.basename(filePath));
 
@@ -31,5 +29,5 @@ const objectStringify = (object, replacer = ' ', numStartSpace = 1, spaceIncreas
 };
 
 export {
-  readFile, isObjectObject, getFileFormat, objectStringify,
+  readFile, getFileFormat, objectStringify,
 };
