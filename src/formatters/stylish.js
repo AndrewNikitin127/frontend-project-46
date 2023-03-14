@@ -10,13 +10,9 @@ const statusDisplay = {
 const isValueInNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => !_.has(val, 'children');
 
-const getNodeTextLine = (createFunc, node, currentIndent, spaceCount, spaceIncreaser = 2) => {
-  if (node.type === 'changed') {
-    const oldline = `${currentIndent}- ${node.name}: ${createFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
-    const newLine = `${currentIndent}+ ${node.name}: ${createFunc(node.newValue, spaceCount + spaceIncreaser)}`;
-    return `${oldline}\n${newLine}`;
-  }
-  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${createFunc(node, spaceCount + spaceIncreaser)}`;
+const getTextLines = (currentValue, replacer, spaceСounter, spaceIncreaser) => {
+  if (!_.isPlainObject(currentValue)) return `${currentValue}`;
+  return objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser);
 };
 
 const buildStylishForm = (diffTree) => {
@@ -24,27 +20,28 @@ const buildStylishForm = (diffTree) => {
   const numStartSpace = 1;
   const spaceIncreaser = 2;
 
-  const createStylish = (currentValue, spaceСounter) => {
+  const iterStylish = (currentValue, spaceСounter) => {
     const currentIndent = replacer.repeat(spaceСounter);
     const bracketSpaceCounter = spaceСounter - 1;
     const bracketIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isValueInNode(currentValue)) {
-      return _.isPlainObject(currentValue)
-        ? objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser)
-        : `${currentValue}`;
+      return getTextLines(currentValue, replacer, spaceСounter, spaceIncreaser);
     }
     if (isLeafNode(currentValue)) {
-      return _.isPlainObject(currentValue.value)
-        ? objectStringify(currentValue.value, replacer, spaceСounter, spaceIncreaser)
-        : `${currentValue.value}`;
+      return getTextLines(currentValue.value, replacer, spaceСounter, spaceIncreaser);
     }
-    const children = currentValue.children.map(
-      (child) => getNodeTextLine(createStylish, child, currentIndent, spaceСounter, spaceIncreaser),
-    );
+    const children = currentValue.children.map((child) => {
+      if (child.type === 'changed') {
+        const oldline = `${currentIndent}- ${child.name}: ${iterStylish(child.oldValue, spaceСounter + spaceIncreaser)}`;
+        const newLine = `${currentIndent}+ ${child.name}: ${iterStylish(child.newValue, spaceСounter + spaceIncreaser)}`;
+        return `${oldline}\n${newLine}`;
+      }
+      return `${currentIndent}${statusDisplay[child.type]}${child.name}: ${iterStylish(child, spaceСounter + spaceIncreaser)}`;
+    });
     return ['{', ...children, `${bracketIndent}}`].join('\n');
   };
-  return createStylish(diffTree, numStartSpace);
+  return iterStylish(diffTree, numStartSpace);
 };
 
 export default buildStylishForm;
