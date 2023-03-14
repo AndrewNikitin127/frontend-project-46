@@ -10,7 +10,7 @@ const statusDisplay = {
 const isValueInNode = (val) => !_.has(val, 'type');
 const isLeafNode = (val) => !_.has(val, 'children');
 
-const getTextLines = (currentValue, replacer, spaceСounter, spaceIncreaser) => {
+const getTextLine = (currentValue, replacer, spaceСounter, spaceIncreaser) => {
   if (!_.isPlainObject(currentValue)) return `${currentValue}`;
   return objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser);
 };
@@ -34,10 +34,10 @@ const buildStylishForm = (diffTree) => {
     const bracketIndent = replacer.repeat(bracketSpaceCounter);
 
     if (isValueInNode(currentValue)) {
-      return getTextLines(currentValue, replacer, spaceСounter, spaceIncreaser);
+      return getTextLine(currentValue, replacer, spaceСounter, spaceIncreaser);
     }
     if (isLeafNode(currentValue)) {
-      return getTextLines(currentValue.value, replacer, spaceСounter, spaceIncreaser);
+      return getTextLine(currentValue.value, replacer, spaceСounter, spaceIncreaser);
     }
     const children = currentValue.children.map((child) => (
       getNodeTextLine(iterStylish, child, currentIndent, spaceСounter, spaceIncreaser)
