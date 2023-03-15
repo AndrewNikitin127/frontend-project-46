@@ -2,6 +2,8 @@ import _ from 'lodash';
 
 const isLeafNode = (val) => !_.has(val, 'children');
 
+const getRootNodeName = (tree) => tree.name;
+
 const getValueText = (val) => {
   if (_.isObject(val)) return '[complex value]';
   if (_.isString(val)) return `'${val}'`;
@@ -26,11 +28,11 @@ const buildPlainForm = (diffTree) => {
 
     return node.children
       .flatMap((child) => iter(child, newAncestry))
+      .map((plainStyleReportLine) => plainStyleReportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
       .join('\n');
   };
 
-  const resultTextLines = diffTree.children.map((node) => iter(node));
-  return resultTextLines.join('\n');
+  return iter(diffTree);
 };
 
 export default buildPlainForm;
