@@ -12,7 +12,7 @@ const buildDiffTree = (object1, object2) => {
 
     return allSortsKeys.map((key) => {
       if (_.isPlainObject(obj1[key]) && _.isPlainObject(obj2[key])) {
-        return getParentNode(key, 'unchanged', createNodesOfDifference(obj1[key], obj2[key]));
+        return getParentNode(key, 'nested', createNodesOfDifference(obj1[key], obj2[key]));
       }
       if (!_.has(obj1, key)) {
         return getLeafNode(key, 'added', obj2[key]);
