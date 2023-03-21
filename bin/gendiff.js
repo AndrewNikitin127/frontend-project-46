@@ -12,7 +12,11 @@ program
   .addOption(new Option('-f, --format <type>', 'output format')
     .choices(['stylish', 'plain', 'json']).default('stylish'))
   .action((filepath1, filepath2, option) => {
-    console.log(gendiff(filepath1, filepath2, option.format));
+    try {
+      console.log(gendiff(filepath1, filepath2, option.format));
+    } catch (error) {
+      console.log(`error: ${error.message}`);
+    }
   });
 
 program.parse();
