@@ -1,9 +1,18 @@
 import yaml from 'js-yaml';
+import _ from 'lodash';
 
-const parse = (data, format) => {
-  if (format === 'json') return JSON.parse(data);
-  if (format === 'yaml' || format === 'yml') return yaml.load(data);
-  return 'unknown format file';
+const parsers = {
+  json: JSON.parse,
+  yaml: yaml.load,
+  yml: yaml.load,
 };
 
-export default parse;
+export default (data, format) => {
+  if (!parsers[format]) throw new Error('unknow file format');
+
+  const outputObject = parsers[format](data);
+
+  if (!_.isPlainObject(outputObject)) throw new Error('Failed correctly to parse files.');
+
+  return outputObject;
+};
