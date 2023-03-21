@@ -6,7 +6,7 @@ const buildFullPath = (filePath) => path.resolve(process.cwd(), filePath);
 
 const readFile = (fullPath) => fs.readFileSync(fullPath, 'UTF-8');
 
-const getFileFormat = (filePath) => path.extname(path.basename(filePath));
+const getFileFormat = (filePath) => path.extname(filePath).slice(1);
 
 const objectStringify = (object, replacer = ' ', numStartSpace = 1, spaceIncreaser = 1) => {
   const iter = (currentValue, spaceCount) => {
