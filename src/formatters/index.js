@@ -8,4 +8,8 @@ const forrmaters = {
   json,
 };
 
-export default (diffTree, formatter) => forrmaters[formatter](diffTree);
+export default (diffTree, formatter) => {
+  if (!forrmaters[formatter]) throw new Error(`error: option '-f, --format <type>' argument '${formatter}' is invalid. Allowed choices are stylish, plain, json.`);
+
+  return forrmaters[formatter](diffTree);
+};
