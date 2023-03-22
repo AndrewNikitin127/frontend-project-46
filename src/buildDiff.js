@@ -1,10 +1,10 @@
 import _ from 'lodash';
 
 const buildDiffTree = (object1, object2) => {
-  const getParentNode = (name, type, children) => ({ name, type, children });
-  const getLeafNode = (name, type, value) => ({ name, type, value });
-  const getChangedLeafNode = (name, type, oldValue, newValue) => ({
-    name, type, oldValue, newValue,
+  const getParentNode = (key, type, children) => ({ key, type, children });
+  const getLeafNode = (key, type, value) => ({ key, type, value });
+  const getChangedLeafNode = (key, type, oldValue, newValue) => ({
+    key, type, oldValue, newValue,
   });
 
   const createNodesOfDifference = (obj1, obj2) => {

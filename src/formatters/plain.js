@@ -17,7 +17,7 @@ const mapper = {
 
 const buildPlainForm = (diffTree) => {
   const iter = (node, ancestry = '') => {
-    const newAncestry = ancestry ? [ancestry, node.name].join('.') : node.name;
+    const newAncestry = ancestry ? [ancestry, node.key].join('.') : node.key;
 
     return mapper[node.type](node, newAncestry, iter);
   };
