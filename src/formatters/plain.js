@@ -1,35 +1,25 @@
 import _ from 'lodash';
 
-const isLeafNode = (val) => !_.has(val, 'children');
-
-const getRootNodeName = (tree) => tree.name;
-
-const getValueText = (val) => {
+const stringify = (val) => {
   if (_.isObject(val)) return '[complex value]';
   if (_.isString(val)) return `'${val}'`;
   return val;
 };
 
-const getReportNodeChanges = (node, ancestry) => {
-  if (node.type === 'added') {
-    return `Property '${ancestry}' was added with value: ${getValueText(node.value)}`;
-  } if (node.type === 'changed') {
-    return `Property '${ancestry}' was updated. From ${getValueText(node.oldValue)} to ${getValueText(node.newValue)}`;
-  } if (node.type === 'removed') {
-    return `Property '${ancestry}' was removed`;
-  } return [];
+const mapper = {
+  root: (node, ancestry, iter) => node.children.flatMap((child) => iter(child)).join('\n'),
+  nested: (node, ancestry, iter) => node.children.flatMap((child) => iter(child, ancestry)).join('\n'),
+  added: (node, ancestry) => `Property '${ancestry}' was added with value: ${stringify(node.value)}`,
+  changed: (node, ancestry) => `Property '${ancestry}' was updated. From ${stringify(node.oldValue)} to ${stringify(node.newValue)}`,
+  removed: (node, ancestry) => `Property '${ancestry}' was removed`,
+  unchanged: () => [],
 };
 
 const buildPlainForm = (diffTree) => {
   const iter = (node, ancestry = '') => {
     const newAncestry = ancestry ? [ancestry, node.name].join('.') : node.name;
 
-    if (isLeafNode(node)) return getReportNodeChanges(node, newAncestry);
-
-    return node.children
-      .flatMap((child) => iter(child, newAncestry))
-      .map((plainStyleReportLine) => plainStyleReportLine.replace(`${getRootNodeName(diffTree)}.`, ''))
-      .join('\n');
+    return mapper[node.type](node, newAncestry, iter);
   };
 
   return iter(diffTree);
