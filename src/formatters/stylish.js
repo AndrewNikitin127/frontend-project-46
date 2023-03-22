@@ -13,15 +13,19 @@ const stringify = (data, depth, mapping) => {
   return `{\n${textLine.join('\n')}\n${indent(depth)}  }`;
 };
 
-const getLeafLine = (name, value, depth, mapping, status) => `${indent(depth)}${status} ${name}: ${stringify(value, depth, mapping)}`;
+const getLeafLine = (name, value, depth, mapping, status) => (
+  `${indent(depth)}${status} ${name}: ${stringify(value, depth, mapping)}`);
+
+const getParentLine = (children, depth, iter, mapping) => (
+  children.flatMap((node) => mapping[node.type](node, depth + 1, iter)));
 
 const mapping = {
   root: ({ children }, depth, iter) => {
-    const textLine = children.flatMap((node) => mapping[node.type](node, depth + 1, iter));
+    const textLine = getParentLine(children, depth, iter, mapping);
     return `{\n${textLine.join('\n')}\n}`;
   },
   nested: ({ name, children }, depth, iter) => {
-    const textLine = children.flatMap((node) => mapping[node.type](node, depth + 1, iter));
+    const textLine = getParentLine(children, depth, iter, mapping);
     return `${indent(depth)}  ${name}: {\n${textLine.join('\n')}\n${indent(depth)}  }`;
   },
   added: ({ name, value }, depth) => getLeafLine(name, value, depth, mapping, '+'),
