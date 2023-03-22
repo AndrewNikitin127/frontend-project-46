@@ -6,7 +6,7 @@ const stringify = (val) => {
   return val;
 };
 
-const mapper = {
+const mapping = {
   root: (node, ancestry, iter) => node.children.flatMap((child) => iter(child)).join('\n'),
   nested: (node, ancestry, iter) => node.children.flatMap((child) => iter(child, ancestry)).join('\n'),
   added: (node, ancestry) => `Property '${ancestry}' was added with value: ${stringify(node.value)}`,
@@ -19,7 +19,7 @@ const buildPlainForm = (diffTree) => {
   const iter = (node, ancestry = '') => {
     const newAncestry = ancestry ? [ancestry, node.key].join('.') : node.key;
 
-    return mapper[node.type](node, newAncestry, iter);
+    return mapping[node.type](node, newAncestry, iter);
   };
 
   return iter(diffTree);
