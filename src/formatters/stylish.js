@@ -1,49 +1,41 @@
 import _ from 'lodash';
 import { objectStringify } from '../tools.js';
 
-const statusDisplay = {
-  added: '+ ',
-  removed: '- ',
-  unchanged: '  ',
-  nested: '  ',
+const indent = (indentCount) => '  '.repeat(indentCount);
+
+const stringify = (nodeValue, indentCount) => {
+  if (!_.isPlainObject(nodeValue)) return String(nodeValue);
+
+  return objectStringify(nodeValue, '  ', indentCount + 2, 2);
 };
 
-const isValueInNode = (val) => !_.has(val, 'type');
+const mapper = {
+  root: ({ children }, indentCount, iter) => {
+    const textLine = children.flatMap((node) => mapper[node.type](node, indentCount + 1, iter));
+    return `{\n${textLine.join('\n')}\n}`;
+  },
+  nested: ({ name, children }, indentCount, iter) => {
+    const textLine = children.flatMap((node) => mapper[node.type](node, indentCount + 2, iter));
+    return `${indent(indentCount)}  ${name}: {\n${textLine.join('\n')}\n${indent(indentCount)}  }`;
+  },
 
-const getNodeTextLine = (createFunc, node, currentIndent, spaceCount, spaceIncreaser) => {
-  if (node.type === 'changed') {
-    const oldline = `${currentIndent}- ${node.name}: ${createFunc(node.oldValue, spaceCount + spaceIncreaser)}`;
-    const newLine = `${currentIndent}+ ${node.name}: ${createFunc(node.newValue, spaceCount + spaceIncreaser)}`;
-    return `${oldline}\n${newLine}`;
-  }
-  if (node.type === 'nested') {
-    return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${createFunc(node, spaceCount + spaceIncreaser)}`;
-  }
-  return `${currentIndent}${statusDisplay[node.type]}${node.name}: ${createFunc(node.value, spaceCount + spaceIncreaser)}`;
+  added: (node, indentCount) => `${indent(indentCount)}+ ${node.name}: ${stringify(node.value, indentCount)}`,
+  removed: (node, indentCount) => `${indent(indentCount)}- ${node.name}: ${stringify(node.value, indentCount)}`,
+  unchanged: (node, indentCount) => `${indent(indentCount)}  ${node.name}: ${stringify(node.value, indentCount)}`,
+
+  changed: (node, indentCount) => {
+    const { name, newValue, oldValue } = node;
+
+    const oldData = `${indent(indentCount)}- ${name}: ${stringify(oldValue, indentCount)}`;
+    const newData = `${indent(indentCount)}+ ${name}: ${stringify(newValue, indentCount)}`;
+
+    return [oldData, newData];
+  },
 };
 
-const buildStylishForm = (diffTree) => {
-  const replacer = '  ';
-  const numStartSpace = 1;
-  const spaceIncreaser = 2;
-
-  const iterStylish = (currentValue, spaceСounter) => {
-    const currentIndent = replacer.repeat(spaceСounter);
-    const bracketSpaceCounter = spaceСounter - 1;
-    const bracketIndent = replacer.repeat(bracketSpaceCounter);
-
-    if (isValueInNode(currentValue)) {
-      return !_.isPlainObject(currentValue)
-        ? `${currentValue}`
-        : objectStringify(currentValue, replacer, spaceСounter, spaceIncreaser);
-    }
-    const children = currentValue.children.map((child) => (
-      getNodeTextLine(iterStylish, child, currentIndent, spaceСounter, spaceIncreaser)
-    ));
-    return ['{', ...children, `${bracketIndent}}`].join('\n');
-  };
-
-  return iterStylish(diffTree, numStartSpace);
+const renderTree = (ast) => {
+  const iter = (node, indentCount) => mapper[node.type](node, indentCount, iter);
+  return iter(ast, 0);
 };
 
-export default buildStylishForm;
+export default renderTree;
