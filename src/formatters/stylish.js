@@ -13,6 +13,8 @@ const stringify = (data, depth, mapping) => {
   return `{\n${textLine.join('\n')}\n${indent(depth)}  }`;
 };
 
+const getLeafLine = (name, value, depth, mapping, status) => `${indent(depth)}${status} ${name}: ${stringify(value, depth, mapping)}`;
+
 const mapping = {
   root: ({ children }, depth, iter) => {
     const textLine = children.flatMap((node) => mapping[node.type](node, depth + 1, iter));
@@ -22,14 +24,12 @@ const mapping = {
     const textLine = children.flatMap((node) => mapping[node.type](node, depth + 1, iter));
     return `${indent(depth)}  ${name}: {\n${textLine.join('\n')}\n${indent(depth)}  }`;
   },
-  added: (node, depth) => `${indent(depth)}+ ${node.name}: ${stringify(node.value, depth, mapping)}`,
-  removed: (node, depth) => `${indent(depth)}- ${node.name}: ${stringify(node.value, depth, mapping)}`,
-  unchanged: (node, depth) => `${indent(depth)}  ${node.name}: ${stringify(node.value, depth, mapping)}`,
-  changed: (node, depth) => {
-    const { name, newValue, oldValue } = node;
-
-    const oldData = `${indent(depth)}- ${name}: ${stringify(oldValue, depth, mapping)}`;
-    const newData = `${indent(depth)}+ ${name}: ${stringify(newValue, depth, mapping)}`;
+  added: ({ name, value }, depth) => getLeafLine(name, value, depth, mapping, '+'),
+  removed: ({ name, value }, depth) => getLeafLine(name, value, depth, mapping, '-'),
+  unchanged: ({ name, value }, depth) => getLeafLine(name, value, depth, mapping, ' '),
+  changed: ({ name, newValue, oldValue }, depth) => {
+    const oldData = getLeafLine(name, oldValue, depth, mapping, '-');
+    const newData = getLeafLine(name, newValue, depth, mapping, '+');
     return [oldData, newData];
   },
 };
